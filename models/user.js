@@ -1,4 +1,5 @@
 const mongoose= require("mongoose")
+const bcryptjs= require("bcryptjs")
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -22,6 +23,17 @@ const userSchema = new mongoose.Schema({
     }
 },{
     timestamps:true
+})
+
+
+// password hashing
+
+userSchema.pre("save",async function(next){
+    const User = this
+    if(User.isModified("password")){
+        User.password = await bcryptjs.hash(User.password,8)
+    }
+    next()
 })
 
 const user = mongoose.model("user",userSchema)
