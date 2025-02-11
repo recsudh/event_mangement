@@ -5,8 +5,7 @@ function signup(req,res,next){
     const requirebody= z.object({
         name: z.string(),
         email:z.string().email(),
-        password: z.string().min(5),
-        role:z.string()
+        password: z.string().min(5)  
     })
 
     const out= requirebody.safeParse(req.body)
@@ -15,7 +14,7 @@ function signup(req,res,next){
     if(out.error){
         return res.json({
             message:"unsuccessful",
-            Error: out.error
+            Error: out.error.issues
         })
     }
     next()
