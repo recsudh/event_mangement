@@ -16,6 +16,10 @@ const event = new mongoose.Schema({
     date:{
         type:Date,
         date:Date.now
+    },
+    event_manager:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user"
     }
 })
 
