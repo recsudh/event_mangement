@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 // gerating auth token
 
 userSchema.methods.generatetoken= async function(){
-    const User = thisu
+    const User = this
     if(User.role==="admin"){
         const token = await jwt.sign({_id:User._id},process.env.JWT_SECRET_ADMIN)
     }
@@ -38,7 +38,7 @@ userSchema.methods.generatetoken= async function(){
         const token = await jwt.sign({_id:User._id},process.env.JWT_SECRET_USER)
     }
     if(!token){
-        throw new Error("Invalid token!!")
+        throw new Error(" token not generated!!!")
     }
     
     return token

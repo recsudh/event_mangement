@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const express = require("express");
 const {z}= require("zod")
-const {signup}= require("../middlewares/validation")
+const {signup,login}= require("../middlewares/validation")
 
 const user_router = express.Router();
 
@@ -27,7 +27,7 @@ user_router.post("/register",signup,async(req,res)=>{
 } )
 
 // login route 
-user_router.post("/login",async(req,res)=>{
+user_router.post("/login",login,async(req,res)=>{
      try{
         const {email,password }= req.body
         const user = await User.findbycredential(email,password)
