@@ -2,7 +2,7 @@ const mongoose= require("mongoose")
 const bcryptjs= require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
-const userSchema = new mongoose.Schema({
+const managerschema = new mongoose.Schema({
     name:{
         type:String,
         required:true
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type:String,
-        default:"user"
+        default:"manager"
     }
 },{
     timestamps:true
@@ -28,10 +28,9 @@ const userSchema = new mongoose.Schema({
 
 // gerating auth token
 
-userSchema.methods.generatetoken= async function(){
+managerschema.methods.generatetoken= async function(){
     const User = this
-    const token = await jwt.sign({_id:User._id},process.env.JWT_SECRET_USER)
-    
+    const token = await jwt.sign({_id:User._id},process.env.JWT_SECRET_ADMIN)
     if(!token){
         throw new Error(" token not generated!!!")
     }
@@ -40,8 +39,8 @@ userSchema.methods.generatetoken= async function(){
 }
 
 // find by credentials 
-userSchema.statics.findbycredential=async function(email,password){
-    const User = await user.findOne({email})
+managerschema.statics.findbycredential=async function(email,password){
+    const User = await manager.findOne({email})
     if(!User){
         throw new Error("user not found!!")
     }
@@ -57,14 +56,14 @@ userSchema.statics.findbycredential=async function(email,password){
 
 // password hashing
 
-userSchema.pre("save",async function(next){
-    const User = this
-    if(User.isModified("password")){
-        User.password = await bcryptjs.hash(User.password,8)
+managerschema.pre("save",async function(next){
+    const Manager = this
+    if(Manager.isModified("password")){
+        Manager.password = await bcryptjs.hash(Manager.password,8)
     }
     next()
 })
 
-const user = mongoose.model("user",userSchema)
+const manager = mongoose.model("manager",managerschema)
 
-module.exports = user
+module.exports = manager
