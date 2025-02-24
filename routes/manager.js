@@ -1,7 +1,7 @@
 const Manager = require("../models/manager")
 const express = require("express")
 const {signup,login}= require("../middlewares/validation")
-
+const {manager_auth}=require("../middlewares/auth")
 const manager_route = express.Router();
 
 manager_route.post("/manager/register",signup,async(req,res)=>{

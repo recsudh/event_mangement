@@ -7,10 +7,10 @@ const route = express.Router()
 route.post("/create",async (req,res)=>{
     try{
         console.log(req.body);
-        const {title,description,location} = req.body
+        const {title,description,location,price} = req.body
         const date = Date.now()
         // const event_manager= "001"
-        await Event.create({title,description,location,date})
+        await Event.create({title,description,location,date,price})
         res.status(201).send({
             message:"successfull!!"
             })

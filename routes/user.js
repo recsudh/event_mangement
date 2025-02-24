@@ -3,7 +3,8 @@ const Event = require("../models/event")
 const express = require("express");
 const {z}= require("zod")
 const {signup,login}= require("../middlewares/validation")
-const user_auth= require("../middlewares/auth")
+const {user_auth}= require("../middlewares/auth")
+const Ticket= require("../models/ticket")
 
 const user_router = express.Router();
 
@@ -68,6 +69,32 @@ user_router.get("/user/event",user_auth,async(req,res)=>{
             message:"unsuccessfull!",
             Error:e.message
         })
+    }
+})
+
+
+// getting tickets
+user_router.post("/user/generate_ticket",user_auth,async(req,res)=>{
+    try{
+        const user_id= req.user_id
+        const {event_id,qunatity}=req.body
+        const event_details= await Event.findOne({_id:event_id})
+
+        // const event_name= event.title
+        await Ticket.create({
+            user_id,event_id,event_details,qunatity
+        })
+        res.json({
+            status:"successfull",
+            message:"created"
+        })
+
+    }catch(e){
+       console.log(e); 
+       res.status(500).send({
+        status:"unsuccessfull",
+        Error:e.message
+       })
     }
 })
 
