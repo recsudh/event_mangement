@@ -45,4 +45,32 @@ The [Your Website Name] Team`,
   }
 }
 
-module.exports = main;
+async function email_login(name,code,email){
+  try {
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL, // sender address
+      to: email, // list of receivers
+      subject: "Login !",
+      text: `Hello ${name} 🎉 
+
+    Best Regards,  
+    The [Your Website Name] Team`,
+        html: `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2 style="color: #4CAF50;">Hello ${name}, Welcome !! 🎉</h2>
+          <p>Your verification code  is ${code}.</p>
+          <p>If you ever need assistance, feel free to <a href="mailto:${process.env.EMAIL}" style="color: #008CBA; text-decoration: none;">reach out to us</a>. We're here to help!</p>
+          <p>Enjoy your journey with us! 🚀</p>
+          <br>
+          <p style="color: #777;">Best Regards,<br>The explore_journey Team</p>
+        </div>`,
+      });
+  
+    console.log("Message sent: %s", info.messageId);
+    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+    }catch(e){
+      console.log(e);
+      
+    }
+}
+
+module.exports ={main,email_login};

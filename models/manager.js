@@ -15,7 +15,12 @@ const managerschema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
+        unique:true
 
+    },
+    mobile_no:{
+        type:Number,
+        required:true
     },
     role:{
         type:String,
