@@ -9,6 +9,11 @@ const event = new mongoose.Schema({
         type:String,
         required:true
     },
+    category:{
+        type:String,
+        enum:["concert","comedy","sports","Dj night"],
+        required:true
+    },
     location:{
         type:String,
         required:true
@@ -21,7 +26,7 @@ const event = new mongoose.Schema({
         type:Number,
         required:true
     },
-    event_manager:{
+    event_manager_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"user"
     }

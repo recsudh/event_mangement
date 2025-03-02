@@ -19,18 +19,27 @@ async function user_auth(req,res,next){
 
 async function manager_auth(req,res,next){
     // console.log(req.headers )
+    try{
     const token = req.header("Authorization").replace("Bearer ","")
     if(!token){
-        throw new Error("Invalid token!!")
+       throw new Error("invalid token")
     }
     console.log(token)
     const decode = jwt.verify(token,process.env.JWT_SECRET_ADMIN)
     if(!token){
-        throw new Error("Invalid token!!")
+        throw new Error("invalid token")
     }
     req.token = token
-    // user_id=decode._id
+    req.manager_id=decode._id
     next()
-    // console.log(decode )
+    }catch(e){
+        // console.log(e);
+        res.status(500).json({
+            message:"unsuccessfull!!",
+            token:"invalid token",
+            Error:e.message
+           })
+    }
+    
 }
 module.exports={user_auth,manager_auth}
