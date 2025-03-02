@@ -1,17 +1,19 @@
 const User = require("../models/user");
 const Event = require("../models/event")
 const express = require("express");
-const {z}= require("zod")
 const {signup,login}= require("../middlewares/validation")
 const {user_auth}= require("../middlewares/auth")
 const Ticket= require("../models/ticket")
+const main= require("../utils/mail")
 
 const user_router = express.Router();
 
 user_router.post("/user/register",signup,async(req,res)=>{
     try{
        console.log(req.body);
-        const user = User(req.body)
+        const{name,email,password} = User(req.body)
+        const user = new User({name,email,password})
+        main(email,name)
         await user.save()
          res.json({
         message:"successfull!!",
